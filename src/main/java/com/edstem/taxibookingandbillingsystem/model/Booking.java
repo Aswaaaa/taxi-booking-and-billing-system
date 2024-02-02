@@ -32,7 +32,7 @@ public class Booking {
     private Taxi taxi;
     private String pickupLocation;
     private String dropoffLocation;
-    private Double fare;
+    private double fare;
     private LocalDateTime bookingTime;
     @Enumerated(EnumType.STRING)
     private Status status;

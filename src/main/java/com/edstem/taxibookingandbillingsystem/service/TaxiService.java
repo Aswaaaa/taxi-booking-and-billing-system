@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class TaxiService {
@@ -21,5 +24,11 @@ public class TaxiService {
                 .build();
         taxi = taxiRepository.save(taxi);
         return modelMapper.map(taxi, TaxiResponse.class);
+    }
+    public List<TaxiResponse> findAvailableTaxis(String pickupLocation){
+        List<Taxi> availableTaxis = taxiRepository.findByCurrentLocation(pickupLocation );
+        return availableTaxis.stream()
+                .map(taxi -> modelMapper.map(taxi,TaxiResponse.class))
+                .collect(Collectors.toList());
     }
 }

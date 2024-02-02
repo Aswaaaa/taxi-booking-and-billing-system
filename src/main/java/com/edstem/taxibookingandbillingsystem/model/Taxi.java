@@ -23,6 +23,6 @@ public class Taxi {
     private String driverName;
     private String licenseNumber;
     private String currentLocation;
-    @OneToMany(mappedBy = "taxi",cascade = CascadeType.ALL)
-    private List<Booking> bookings;
+//    @OneToMany(mappedBy = "taxi",cascade = CascadeType.ALL)
+//    private List<Booking> bookings;
 }
