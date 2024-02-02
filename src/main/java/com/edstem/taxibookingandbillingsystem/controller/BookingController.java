@@ -4,6 +4,7 @@ import com.edstem.taxibookingandbillingsystem.contract.request.BookingRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.BookingDetailsResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.BookingResponse;
 import com.edstem.taxibookingandbillingsystem.service.BookingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ public class BookingController {
 
 
     @PostMapping("/booking_taxi/{userId}")
-    public @ResponseBody BookingResponse bookingTaxi(@PathVariable Long userId, @RequestParam double distance, @RequestBody BookingRequest request,String pickupLocation){
+    public @ResponseBody BookingResponse bookingTaxi(@Valid  @PathVariable Long userId, @RequestParam double distance, @RequestBody BookingRequest request, String pickupLocation){
         return bookingService.bookingTaxi(userId,distance,request,pickupLocation);
     }
     @GetMapping("/booking_details/{id}")

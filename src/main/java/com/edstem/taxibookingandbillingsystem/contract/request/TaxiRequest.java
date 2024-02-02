@@ -11,9 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaxiRequest {
+    @NotBlank(message = "It cannot be empty")
     private String driverName;
-    @NotBlank
+    @NotBlank(message = "It cannot be empty")
     private String licenseNumber;
+    @NotBlank(message = "It cannot be empty")
     private String currentLocation;
 
 

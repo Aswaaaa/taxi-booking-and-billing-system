@@ -46,7 +46,10 @@ public class BookingService {
 
         List<Taxi> availableTaxis = taxiRepository.findByCurrentLocation(pickupLocation);
         if (!availableTaxis.isEmpty()){
-            Taxi assignedTaxi = availableTaxis.get(0);
+//            Taxi assignedTaxi = availableTaxis.get(0);
+//            BookingResponse bookingResponse = BookingResponse.builder()
+//                    .t
+//                    .build()
         }
             booking = bookingRepository.save(booking);
             return modelMapper.map(booking, BookingResponse.class);

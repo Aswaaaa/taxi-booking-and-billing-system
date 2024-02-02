@@ -7,6 +7,7 @@ import com.edstem.taxibookingandbillingsystem.contract.response.LoginResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.RegisterResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.UpdateAccountResponse;
 import com.edstem.taxibookingandbillingsystem.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,11 +22,11 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(@Valid  @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(userService.register(request));
     }
     @PutMapping("/updateBalance/{id}")
-    public ResponseEntity<UpdateAccountResponse> updateBalance(@PathVariable Long id, @RequestBody UpdateAccountRequest request) {
+    public ResponseEntity<UpdateAccountResponse> updateBalance(@Valid @PathVariable Long id, @RequestBody UpdateAccountRequest request) {
         return ResponseEntity.ok(userService.updateBalance(id, request));
     }
 
