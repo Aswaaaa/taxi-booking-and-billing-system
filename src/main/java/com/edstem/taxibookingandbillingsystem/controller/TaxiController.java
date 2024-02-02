@@ -1,5 +1,6 @@
 package com.edstem.taxibookingandbillingsystem.controller;
 
+import com.edstem.taxibookingandbillingsystem.contract.request.BookingRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.TaxiRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.TaxiResponse;
 import com.edstem.taxibookingandbillingsystem.service.TaxiService;
@@ -29,6 +30,10 @@ public class TaxiController {
     @GetMapping("/availableTaxis")
     public List<TaxiResponse> availableTaxis (@RequestParam String pickupLocation){
         return taxiService.findAvailableTaxis(pickupLocation);
+    }
+    @PostMapping("/assigningTaxi")
+    public TaxiResponse assignTaxi (@RequestBody BookingRequest request){
+        return taxiService.assignTaxiForBooking(request);
     }
 
 }

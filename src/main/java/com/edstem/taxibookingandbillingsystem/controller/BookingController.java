@@ -24,8 +24,8 @@ public class BookingController {
 
 
     @PostMapping("/booking_taxi/{userId}")
-    public @ResponseBody BookingResponse bookingTaxi(@Valid  @PathVariable Long userId, @RequestParam double distance, @RequestBody BookingRequest request, String pickupLocation){
-        return bookingService.bookingTaxi(userId,distance,request,pickupLocation);
+    public @ResponseBody BookingResponse bookingTaxi(@Valid  @PathVariable Long userId, @RequestParam double distance, @RequestBody BookingRequest request){
+        return bookingService.bookingTaxi(userId,distance,request);
     }
     @GetMapping("/booking_details/{id}")
     public BookingDetailsResponse getBookingById(@PathVariable Long id){
