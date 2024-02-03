@@ -15,6 +15,5 @@ public class BookingResponse {
     private String pickupLocation;
     private String dropoffLocation;
     private double fare;
-    private String bookingTime;
     private Status status;
 }

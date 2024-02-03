@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class BookingService {
     private final BookingRepository bookingRepository;
-    private final TaxiRepository taxiRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
@@ -43,6 +42,7 @@ public class BookingService {
                 .bookingTime(LocalDateTime.parse(LocalDateTime.now().toString()))
                 .fare(fare)
                 .status(Status.CONFIRMED)
+                .userId(user)
                 .build();
         User balance = User.builder()
                 .id(user.getId())

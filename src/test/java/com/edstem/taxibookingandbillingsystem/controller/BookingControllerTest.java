@@ -2,6 +2,7 @@ package com.edstem.taxibookingandbillingsystem.controller;
 
 import com.edstem.taxibookingandbillingsystem.constant.Status;
 import com.edstem.taxibookingandbillingsystem.contract.request.BookingRequest;
+import com.edstem.taxibookingandbillingsystem.contract.response.BookingDetailsResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.BookingResponse;
 import com.edstem.taxibookingandbillingsystem.service.BookingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,13 +17,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 public class BookingControllerTest {
 
     @Autowired
@@ -36,19 +39,47 @@ public class BookingControllerTest {
         double distance = 10.00;
 
         BookingRequest request = new BookingRequest("location1", "location2");
-        BookingResponse expectedResponse = new BookingResponse(1L, "location1", "location2", 55.0, LocalDateTime.now().toString(), Status.CONFIRMED);
+        BookingResponse expectedResponse = new BookingResponse(1L, "location1", "location2", 55.0, Status.CONFIRMED);
 
 
         when(bookingService.bookingTaxi(userId, distance, request)).thenReturn(expectedResponse);
 
         mockMvc.perform(
-                        post("/api/booking_taxi/" + userId + "?distance=" + distance)
+                        post("/api/bookingTaxi/" + userId + "?distance=" + distance)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(new ObjectMapper().writeValueAsString(request)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(expectedResponse)));
 
+
+    }
+
+    @Test
+    void testGetBookingDetails() throws Exception {
+        Long id = 1L;
+        BookingDetailsResponse bookingDetailsResponse = new BookingDetailsResponse(id, "location1", LocalDateTime.now().toString(), 55.0);
+
+        when(bookingService.getBookingDetails(id)).thenReturn(bookingDetailsResponse);
+
+        mockMvc.perform(get("/api/bookingDetails/" + id))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(bookingDetailsResponse)));
+
+    }
+
+    @Test
+    void testCancelBooking() throws Exception {
+        Long id = 1L;
+        String expectedResponse = "Booking with ID: " + id + " has been cancelled successfully.";
+
+        when(bookingService.cancelBookingById(id)).thenReturn(expectedResponse);
+
+        mockMvc.perform(put("/api/cancelBooking/" + id))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResponse));
 
     }
 

@@ -15,6 +15,8 @@ public class BookingDetailsResponse {
 
     private Long id;
     private String pickupLocation;
-    private TaxiResponse taxi;
+    private String bookingTime;
+    private double fare;
+
 
 }
