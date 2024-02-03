@@ -1,24 +1,25 @@
 package com.edstem.taxibookingandbillingsystem.service;
 
-import com.edstem.taxibookingandbillingsystem.contract.request.BookingRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.TaxiRequest;
+import com.edstem.taxibookingandbillingsystem.contract.request.TaxiUpdateRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.TaxiResponse;
+import com.edstem.taxibookingandbillingsystem.contract.response.TaxiUpdateResponse;
 import com.edstem.taxibookingandbillingsystem.model.Taxi;
-import com.edstem.taxibookingandbillingsystem.repository.BookingRepository;
 import com.edstem.taxibookingandbillingsystem.repository.TaxiRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
 public class TaxiService {
     private final TaxiRepository taxiRepository;
-    private final BookingRepository bookingRepository;
     private final ModelMapper modelMapper;
 
     public TaxiResponse addTaxi(TaxiRequest request) {
@@ -31,34 +32,34 @@ public class TaxiService {
         return modelMapper.map(taxi, TaxiResponse.class);
     }
 
-    public List<TaxiResponse> findAvailableTaxis(String pickupLocation) {
-        List<Taxi> availableTaxis = taxiRepository.findByCurrentLocation(pickupLocation);
-        return availableTaxis.stream()
-                .map(taxi -> modelMapper.map(taxi, TaxiResponse.class))
-                .collect(Collectors.toList());
+
+    public TaxiUpdateResponse updateTaxiLocation(Long id, TaxiUpdateRequest request) {
+        Taxi taxi = taxiRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Taxi not found with id " + id));
+        Taxi updatedTaxi = Taxi.builder()
+                .id(taxi.getId())
+                .driverName(taxi.getDriverName())
+                .licenseNumber(taxi.getLicenseNumber())
+                .currentLocation(request.getUpdatedLocation())
+                .build();
+        updatedTaxi = taxiRepository.save(updatedTaxi);
+
+        return modelMapper.map(updatedTaxi, TaxiUpdateResponse.class);
+
     }
 
-    public TaxiResponse assignTaxiForBooking(BookingRequest request) {
-        List<Taxi> availableTaxis = taxiRepository.findByCurrentLocation(request.getPickupLocation());
-
-        if (!availableTaxis.isEmpty()) {
-            Taxi assignedTaxi = findTaxiWithMatchingLocation(availableTaxis, request.getPickupLocation());
-            if (assignedTaxi != null) {
-                return modelMapper.map(assignedTaxi, TaxiResponse.class);
-            } else {
-                throw new EntityNotFoundException("Could not found nearest taxi ");
+    public List<TaxiResponse> findTaxi(String pickupLocation) {
+        List<Taxi> allTaxis = taxiRepository.findAll();
+        List<Taxi> availableTaxis = new ArrayList<>();
+        for (Taxi taxis : allTaxis) {
+            if (taxis.getCurrentLocation().equals(pickupLocation)) {
+                availableTaxis.add(taxis);
             }
+        }
+        if (availableTaxis.isEmpty()) {
+            throw new EntityNotFoundException("Taxi not available");
         } else {
-            throw new EntityNotFoundException("No available taxis");
-
+            return availableTaxis.stream().map(taxi -> modelMapper.map(taxi, TaxiResponse.class))
+                    .collect(Collectors.toList());
         }
-    }
-    private Taxi findTaxiWithMatchingLocation(List<Taxi>taxis,String pickupLocation){
-        for (Taxi taxi: taxis){
-            if (pickupLocation.equals(taxi.getCurrentLocation())){
-                return taxi;
-            }
-        }
-        return null;
     }
 }

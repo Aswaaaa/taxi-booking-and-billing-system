@@ -23,17 +23,20 @@ public class BookingController {
     private final BookingService bookingService;
 
 
-    @PostMapping("/booking_taxi/{userId}")
-    public @ResponseBody BookingResponse bookingTaxi(@Valid  @PathVariable Long userId, @RequestParam double distance, @RequestBody BookingRequest request){
-        return bookingService.bookingTaxi(userId,distance,request);
+    @PostMapping("/bookingTaxi/{userId}")
+    public @ResponseBody BookingResponse bookingTaxi(@Valid @PathVariable Long userId, @RequestParam double distance, @RequestBody BookingRequest request) {
+        return bookingService.bookingTaxi(userId, distance, request);
     }
-    @GetMapping("/booking_details/{id}")
-    public BookingDetailsResponse getBookingById(@PathVariable Long id){
+
+    @GetMapping("/bookingDetails/{id}")
+    public BookingDetailsResponse getBookingById(@PathVariable Long id) {
         return bookingService.getBookingDetails(id);
     }
 
-    @PutMapping("/cancel_booking/{id}")
-    public String cancelBooking(@PathVariable Long id){
+    @PutMapping("/cancelBooking/{id}")
+    public String cancelBooking(@PathVariable Long id) {
         return bookingService.cancelBookingById(id);
     }
+
+
 }

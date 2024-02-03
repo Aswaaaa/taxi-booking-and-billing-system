@@ -4,7 +4,6 @@ import com.edstem.taxibookingandbillingsystem.constant.Status;
 import com.edstem.taxibookingandbillingsystem.contract.request.BookingRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.BookingDetailsResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.BookingResponse;
-import com.edstem.taxibookingandbillingsystem.contract.response.TaxiResponse;
 import com.edstem.taxibookingandbillingsystem.exception.BookingNotFoundException;
 import com.edstem.taxibookingandbillingsystem.exception.InsufficientBalanceException;
 import com.edstem.taxibookingandbillingsystem.model.Booking;
@@ -82,7 +81,6 @@ public class BookingService {
         bookingRepository.save(updatedBooking);
         return "Booking with ID: " + id + " has been cancelled successfully.";
     }
-
 
 
 }
