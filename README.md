@@ -22,7 +22,7 @@ The system supports the following features operations:
 
 * POST /api/addingTaxi: Adding a taxi with relevant information.
 * PUT /api/updatingTaxiLocation/{id}: Updating the current location of a taxi.
-* GET /api/findTaxi: Find a taxi with the pickup location. 
+* GET /api/findTaxi: Find a taxi with the pickup location.
 
 
 ##
