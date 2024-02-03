@@ -7,8 +7,10 @@ import static org.mockito.Mockito.when;
 import com.edstem.taxibookingandbillingsystem.configuration.JwtService;
 import com.edstem.taxibookingandbillingsystem.contract.request.LoginRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.RegisterRequest;
+import com.edstem.taxibookingandbillingsystem.contract.request.UpdateAccountRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.LoginResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.RegisterResponse;
+import com.edstem.taxibookingandbillingsystem.contract.response.UpdateAccountResponse;
 import com.edstem.taxibookingandbillingsystem.model.User;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
 import java.util.Optional;
@@ -68,5 +70,21 @@ public class UserServiceTest {
     }
 
     @Test
-    void testUpdateBalance() {}
+    void testUpdateBalance() {
+
+        Long id = 1L;
+        UpdateAccountRequest request = new UpdateAccountRequest(50.0);
+        User user = new User(1L, "name", "email@email.com", "password", 100.0);
+        User updatedUser = new User(1L, "name", "email@email.com", "password", 150.0);
+        UpdateAccountResponse expectedResponse = new UpdateAccountResponse(150.0);
+
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+        when(modelMapper.map(updatedUser, UpdateAccountResponse.class))
+                .thenReturn(expectedResponse);
+
+        UpdateAccountResponse actualResponse = userService.updateBalance(id, request);
+
+        assertEquals(expectedResponse, actualResponse);
+    }
 }

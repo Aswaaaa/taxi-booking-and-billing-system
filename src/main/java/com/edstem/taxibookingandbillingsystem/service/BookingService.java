@@ -28,6 +28,7 @@ public class BookingService {
 
         double minimumCharge = 12.00;
         double fare = distance * minimumCharge;
+
         if (fare > user.getAccountBalance()) {
             throw new InsufficientBalanceException();
         }
@@ -36,12 +37,13 @@ public class BookingService {
                 Booking.builder()
                         .pickupLocation(request.getPickupLocation())
                         .dropoffLocation(request.getDropoffLocation())
-                        .bookingTime(LocalDateTime.parse(LocalDateTime.now().toString()))
+                        .bookingTime(LocalDateTime.now())
                         .fare(fare)
                         .status(Status.CONFIRMED)
                         .userId(user)
                         .build();
-        User balance =
+
+        User updatedUser =
                 User.builder()
                         .id(user.getId())
                         .name(user.getName())
@@ -49,8 +51,10 @@ public class BookingService {
                         .password(user.getPassword())
                         .accountBalance(user.getAccountBalance() - booking.getFare())
                         .build();
-        balance = userRepository.save(balance);
-        booking = bookingRepository.save(booking);
+
+        userRepository.save(updatedUser);
+        bookingRepository.save(booking);
+
         return modelMapper.map(booking, BookingResponse.class);
     }
 

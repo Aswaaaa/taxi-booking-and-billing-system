@@ -11,6 +11,7 @@ import com.edstem.taxibookingandbillingsystem.contract.response.TaxiUpdateRespon
 import com.edstem.taxibookingandbillingsystem.model.Taxi;
 import com.edstem.taxibookingandbillingsystem.repository.TaxiRepository;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,12 +32,14 @@ public class TaxiServiceTest {
     }
 
     @Test
-    void testAddingTaxi() {
+    void testAddTaxi() {
 
-        TaxiRequest request = new TaxiRequest("Name", "123ABC", "Location1");
-        TaxiResponse expectedResponse = new TaxiResponse(1L, "Name", "123ABC", "Location1");
+        TaxiRequest request = new TaxiRequest("NAME", "ABC123", "Location");
+        Taxi taxi = new Taxi(1L, "NAME", "ABC123", "Location");
+        TaxiResponse expectedResponse = new TaxiResponse(1L, "NAME", "ABC123", "Location");
 
-        when(taxiService.addTaxi(any(TaxiRequest.class))).thenReturn(expectedResponse);
+        when(taxiRepository.save(any(Taxi.class))).thenReturn(taxi);
+        when(modelMapper.map(taxi, TaxiResponse.class)).thenReturn(expectedResponse);
 
         TaxiResponse actualResponse = taxiService.addTaxi(request);
 
@@ -44,18 +47,39 @@ public class TaxiServiceTest {
     }
 
     @Test
-    void testUpdatingTaxiLocation() {
+    void testUpdateTaxiLocation() {
+
         Long id = 1L;
-        TaxiUpdateRequest request = new TaxiUpdateRequest("location");
-        Taxi taxi = new Taxi(id, "name", "licenseNumber", "location");
-        Taxi updatedTaxi = new Taxi(id, "name", "licenseNumber", "location");
-        TaxiUpdateResponse expectedResponse = new TaxiUpdateResponse("location");
+        TaxiUpdateRequest request = new TaxiUpdateRequest("New Location");
+        Taxi taxi = new Taxi(1L, "Name", "ABC123", "Old Location");
+        Taxi updatedTaxi = new Taxi(1L, "Name", "ABC123", "New Location");
+        TaxiUpdateResponse expectedResponse = new TaxiUpdateResponse("New Location");
 
         when(taxiRepository.findById(id)).thenReturn(Optional.of(taxi));
-        when(taxiRepository.save(updatedTaxi)).thenReturn(updatedTaxi);
+        when(taxiRepository.save(any(Taxi.class))).thenReturn(updatedTaxi);
         when(modelMapper.map(updatedTaxi, TaxiUpdateResponse.class)).thenReturn(expectedResponse);
 
         TaxiUpdateResponse actualResponse = taxiService.updateTaxiLocation(id, request);
+
+        assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    void testFindTaxi() {
+        String pickupLocation = "SomeLocation";
+        Taxi taxi1 = new Taxi(1L, "Driver1", "ABC123", "SomeLocation");
+        Taxi taxi2 = new Taxi(2L, "Driver2", "XYZ456", "SomeLocation");
+        List<Taxi> allTaxis = List.of(taxi1, taxi2);
+        List<TaxiResponse> expectedResponse =
+                List.of(
+                        new TaxiResponse(1L, "Driver1", "ABC123", "SomeLocation"),
+                        new TaxiResponse(2L, "Driver2", "XYZ456", "SomeLocation"));
+
+        when(taxiRepository.findAll()).thenReturn(allTaxis);
+        when(modelMapper.map(taxi1, TaxiResponse.class)).thenReturn(expectedResponse.get(0));
+        when(modelMapper.map(taxi2, TaxiResponse.class)).thenReturn(expectedResponse.get(1));
+
+        List<TaxiResponse> actualResponse = taxiService.findTaxi(pickupLocation);
 
         assertEquals(expectedResponse, actualResponse);
     }
