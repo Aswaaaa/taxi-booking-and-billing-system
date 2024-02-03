@@ -9,14 +9,12 @@ import com.edstem.taxibookingandbillingsystem.exception.InsufficientBalanceExcep
 import com.edstem.taxibookingandbillingsystem.model.Booking;
 import com.edstem.taxibookingandbillingsystem.model.User;
 import com.edstem.taxibookingandbillingsystem.repository.BookingRepository;
-import com.edstem.taxibookingandbillingsystem.repository.TaxiRepository;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -25,10 +23,8 @@ public class BookingService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-
     public BookingResponse bookingTaxi(Long userId, double distance, BookingRequest request) {
         User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
-
 
         double minimumCharge = 12.00;
         double fare = distance * minimumCharge;
@@ -36,51 +32,49 @@ public class BookingService {
             throw new InsufficientBalanceException();
         }
 
-        Booking booking = Booking.builder()
-                .pickupLocation(request.getPickupLocation())
-                .dropoffLocation(request.getDropoffLocation())
-                .bookingTime(LocalDateTime.parse(LocalDateTime.now().toString()))
-                .fare(fare)
-                .status(Status.CONFIRMED)
-                .userId(user)
-                .build();
-        User balance = User.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .accountBalance(user.getAccountBalance() - booking.getFare())
-                .build();
+        Booking booking =
+                Booking.builder()
+                        .pickupLocation(request.getPickupLocation())
+                        .dropoffLocation(request.getDropoffLocation())
+                        .bookingTime(LocalDateTime.parse(LocalDateTime.now().toString()))
+                        .fare(fare)
+                        .status(Status.CONFIRMED)
+                        .userId(user)
+                        .build();
+        User balance =
+                User.builder()
+                        .id(user.getId())
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .password(user.getPassword())
+                        .accountBalance(user.getAccountBalance() - booking.getFare())
+                        .build();
         balance = userRepository.save(balance);
         booking = bookingRepository.save(booking);
         return modelMapper.map(booking, BookingResponse.class);
-
     }
 
-
     public BookingDetailsResponse getBookingDetails(Long id) {
-        Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new BookingNotFoundException(id));
+        Booking booking =
+                bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException(id));
         return modelMapper.map(booking, BookingDetailsResponse.class);
-
     }
 
     public String cancelBookingById(Long id) {
-        Booking booking = bookingRepository.findById(id).
-                orElseThrow(() -> new BookingNotFoundException(id));
+        Booking booking =
+                bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException(id));
 
-        Booking updatedBooking = Booking.builder()
-                .id(id)
-                .pickupLocation(booking.getPickupLocation())
-                .dropoffLocation(booking.getDropoffLocation())
-                .fare(booking.getFare())
-                .bookingTime(LocalDateTime.parse(LocalDateTime.now().toString()))
-                .status(Status.CANCELLED)
-                .build();
+        Booking updatedBooking =
+                Booking.builder()
+                        .id(id)
+                        .pickupLocation(booking.getPickupLocation())
+                        .dropoffLocation(booking.getDropoffLocation())
+                        .fare(booking.getFare())
+                        .bookingTime(LocalDateTime.parse(LocalDateTime.now().toString()))
+                        .status(Status.CANCELLED)
+                        .build();
 
         bookingRepository.save(updatedBooking);
         return "Booking with ID: " + id + " has been cancelled successfully.";
     }
-
-
 }

@@ -25,48 +25,46 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-
     public RegisterResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new EntityAlreadyExistsException(request.getEmail());
         }
-        User user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .accountBalance(0D)
-                .build();
+        User user =
+                User.builder()
+                        .name(request.getName())
+                        .email(request.getEmail())
+                        .password(passwordEncoder.encode(request.getPassword()))
+                        .accountBalance(0D)
+                        .build();
         userRepository.save(user);
         return modelMapper.map(user, RegisterResponse.class);
     }
 
     public LoginResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(InvalidLoginException::new);
+        User user =
+                userRepository
+                        .findByEmail(request.getEmail())
+                        .orElseThrow(InvalidLoginException::new);
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new InvalidLoginException();
         }
         String jwtToken = jwtService.generateToken(user);
-        return LoginResponse.builder()
-                .token(jwtToken)
-                .build();
-
+        return LoginResponse.builder().token(jwtToken).build();
     }
 
     public UpdateAccountResponse updateBalance(Long id, UpdateAccountRequest request) {
         User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        user = User.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .accountBalance(user.getAccountBalance() + request.getAccountBalance())
-                .build();
+        user =
+                User.builder()
+                        .id(user.getId())
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .password(user.getPassword())
+                        .accountBalance(user.getAccountBalance() + request.getAccountBalance())
+                        .build();
         User updatedUser = userRepository.save(user);
         return modelMapper.map(updatedUser, UpdateAccountResponse.class);
-
     }
-
-
 }

@@ -13,7 +13,6 @@ public class TaxiBookingAndBillingSystemApplication {
         SpringApplication.run(TaxiBookingAndBillingSystemApplication.class, args);
     }
 
-
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();

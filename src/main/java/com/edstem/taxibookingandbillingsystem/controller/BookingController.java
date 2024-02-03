@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookingController {
     private final BookingService bookingService;
 
-
     @PostMapping("/bookingTaxi/{userId}")
-    public @ResponseBody BookingResponse bookingTaxi(@Valid @PathVariable Long userId, @RequestParam double distance, @RequestBody BookingRequest request) {
+    public @ResponseBody BookingResponse bookingTaxi(
+            @Valid @PathVariable Long userId,
+            @RequestParam double distance,
+            @RequestBody BookingRequest request) {
         return bookingService.bookingTaxi(userId, distance, request);
     }
 
@@ -37,6 +39,4 @@ public class BookingController {
     public String cancelBooking(@PathVariable Long id) {
         return bookingService.cancelBookingById(id);
     }
-
-
 }

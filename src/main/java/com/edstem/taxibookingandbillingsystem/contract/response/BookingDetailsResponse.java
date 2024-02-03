@@ -17,6 +17,4 @@ public class BookingDetailsResponse {
     private String pickupLocation;
     private String bookingTime;
     private double fare;
-
-
 }

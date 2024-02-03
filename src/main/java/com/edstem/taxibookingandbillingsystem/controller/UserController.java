@@ -1,6 +1,5 @@
 package com.edstem.taxibookingandbillingsystem.controller;
 
-
 import com.edstem.taxibookingandbillingsystem.contract.request.LoginRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.RegisterRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.UpdateAccountRequest;
@@ -35,9 +34,8 @@ public class UserController {
     }
 
     @PutMapping("/updateBalance/{id}")
-    public ResponseEntity<UpdateAccountResponse> updateBalance(@Valid @PathVariable Long id, @RequestBody UpdateAccountRequest request) {
+    public ResponseEntity<UpdateAccountResponse> updateBalance(
+            @Valid @PathVariable Long id, @RequestBody UpdateAccountRequest request) {
         return ResponseEntity.ok(userService.updateBalance(id, request));
     }
-
-
 }
