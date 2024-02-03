@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "3b727ed1-c3a5-4bd3-93e0-e2e3e1023337",
+		"name": "Taxi_Booking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28641830",
+		"_collection_link": "https://martian-capsule-417732.postman.co/workspace/New-Team-Workspace~0df16d72-669a-4950-af5c-6491f494dbc9/collection/28641830-3b727ed1-c3a5-4bd3-93e0-e2e3e1023337?action=share&source=collection_link&creator=28641830"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Aswa\",\r\n    \"email\":\"aswa@gmail.com\",\r\n    \"password\":\"Aswa19\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"devu@gmail.com\",\r\n    \"password\":\"devan@123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updating balance",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountBalance\":6000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/user/updateBalance/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"user",
+						"updateBalance",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Booking_taxi",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6Niwic3ViIjoic2hhcnVrQGdtYWlsLmNvbSIsImlhdCI6MTcwNjkzNTI3NywiZXhwIjoxNzA2OTM4MTU3fQ.vnNtS4nX28Q5uZdbZ7vwocTSLIyGYtMnHPa98mu_3t8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pickupLocation\":\"Ravipuram\",\r\n    \"dropoffLocation\":\"Aluva\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/api/bookingTaxi/4?distance=25",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"bookingTaxi",
+						"4"
+					],
+					"query": [
+						{
+							"key": "distance",
+							"value": "25"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Booking Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/api/bookingDetails/7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"bookingDetails",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancelling a booking",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/api/cancelBooking/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"cancelBooking",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adding a taxi",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"driverName\":\"Sreejith\",\r\n    \"licenseNumber\":\"KL-01-P-6001\",\r\n    \"currentLocation\":\"Kazhakoottam\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/api/adding_taxi",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"adding_taxi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Updating location",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6Niwic3ViIjoic2hhcnVrQGdtYWlsLmNvbSIsImlhdCI6MTcwNjkzNTI3NywiZXhwIjoxNzA2OTM4MTU3fQ.vnNtS4nX28Q5uZdbZ7vwocTSLIyGYtMnHPa98mu_3t8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"updatedLocation\":\"Vytilla\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/api/updatingTaxiLocation/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"updatingTaxiLocation",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Finding taxi",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6Niwic3ViIjoic2hhcnVrQGdtYWlsLmNvbSIsImlhdCI6MTcwNjkzNTI3NywiZXhwIjoxNzA2OTM4MTU3fQ.vnNtS4nX28Q5uZdbZ7vwocTSLIyGYtMnHPa98mu_3t8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/api/findTaxi?pickupLocation=Infopark",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"api",
+						"findTaxi"
+					],
+					"query": [
+						{
+							"key": "pickupLocation",
+							"value": "Infopark"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
