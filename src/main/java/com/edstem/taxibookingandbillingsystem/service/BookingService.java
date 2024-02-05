@@ -11,10 +11,11 @@ import com.edstem.taxibookingandbillingsystem.model.User;
 import com.edstem.taxibookingandbillingsystem.repository.BookingRepository;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor

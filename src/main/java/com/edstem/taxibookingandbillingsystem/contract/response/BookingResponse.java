@@ -2,14 +2,13 @@ package com.edstem.taxibookingandbillingsystem.contract.response;
 
 import com.edstem.taxibookingandbillingsystem.constant.Status;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Getter
 public class BookingResponse {
     private Long id;
     private String pickupLocation;

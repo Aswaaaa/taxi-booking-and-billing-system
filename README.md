@@ -1,6 +1,7 @@
 # Taxi Booking System
 
-This project is a Taxi booking and billing system built using Maven and Spring Boot in Java. It provides a set of RESTful APIs to manage tasks.
+This project is a Taxi booking and billing system built using Maven and Spring Boot in Java. It provides a set of
+RESTful APIs to manage tasks.
 
 ## Features
 
@@ -24,11 +25,10 @@ The system supports the following features operations:
 * PUT /api/updatingTaxiLocation/{id}: Updating the current location of a taxi.
 * GET /api/findTaxi: Find a taxi with the pickup location.
 
-
 ##
+
 Prerequisites
 Before you start, ensure you have met the following requirements:
-
 
 * Java Development Kit (JDK) 17
 * Maven
@@ -48,4 +48,6 @@ To set up the project locally, follow the following:
 * Note that the system use JWT authentication, so make sure to set a SECRET_KEY as environment variable.
 
 ## Testing
-To test the APIs, you can use any API testing tool Postman. Make sure your server is running, and then send HTTP requests to the API endpoints.
+
+To test the APIs, you can use any API testing tool Postman. Make sure your server is running, and then send HTTP
+requests to the API endpoints.

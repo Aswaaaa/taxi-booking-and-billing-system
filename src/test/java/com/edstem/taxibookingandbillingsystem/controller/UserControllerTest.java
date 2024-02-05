@@ -1,13 +1,5 @@
 package com.edstem.taxibookingandbillingsystem.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.edstem.taxibookingandbillingsystem.contract.request.LoginRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.RegisterRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.UpdateAccountRequest;
@@ -24,17 +16,27 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 public class UserControllerTest {
-    @Autowired private MockMvc mockMvc;
-    @MockBean private UserService userService;
+    @Autowired
+    private MockMvc mockMvc;
+    @MockBean
+    private UserService userService;
 
     @Test
     void testRegister() throws Exception {
 
-        RegisterRequest request = new RegisterRequest("name", "email", "password");
-        RegisterResponse expectedResponse = new RegisterResponse(1L, "name", "email");
+        RegisterRequest request = new RegisterRequest("name", "email@email", "password");
+        RegisterResponse expectedResponse = new RegisterResponse(1L, "name", "email@email");
 
         when(userService.register(any(RegisterRequest.class))).thenReturn(expectedResponse);
 
@@ -49,7 +51,7 @@ public class UserControllerTest {
 
     @Test
     void testLogin() throws Exception {
-        LoginRequest request = new LoginRequest("email", "password");
+        LoginRequest request = new LoginRequest("email@email", "password");
         LoginResponse expectedResponse = new LoginResponse("testToken");
 
         when(userService.login(any(LoginRequest.class))).thenReturn(expectedResponse);

@@ -1,9 +1,5 @@
 package com.edstem.taxibookingandbillingsystem.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import com.edstem.taxibookingandbillingsystem.configuration.JwtService;
 import com.edstem.taxibookingandbillingsystem.contract.request.LoginRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.RegisterRequest;
@@ -11,9 +7,9 @@ import com.edstem.taxibookingandbillingsystem.contract.request.UpdateAccountRequ
 import com.edstem.taxibookingandbillingsystem.contract.response.LoginResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.RegisterResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.UpdateAccountResponse;
+import com.edstem.taxibookingandbillingsystem.exception.InvalidLoginException;
 import com.edstem.taxibookingandbillingsystem.model.User;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,13 +19,26 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 public class UserServiceTest {
-    @Mock private UserRepository userRepository;
-    @Mock private ModelMapper modelMapper;
-    @Mock private PasswordEncoder passwordEncoder;
-    @Mock private JwtService jwtService;
-    @Mock private AuthenticationManager authenticationManager;
-    @InjectMocks private UserService userService;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private ModelMapper modelMapper;
+    @Mock
+    private PasswordEncoder passwordEncoder;
+    @Mock
+    private JwtService jwtService;
+    @Mock
+    private AuthenticationManager authenticationManager;
+    @InjectMocks
+    private UserService userService;
 
     @BeforeEach
     public void setUp() {
@@ -68,6 +77,17 @@ public class UserServiceTest {
 
         assertEquals(expectedResponse, actualResponse);
     }
+
+    @Test
+    public void testInvalidLoginException() {
+        String expectedMessage = "Invalid Login";
+        InvalidLoginException exception = assertThrows(InvalidLoginException.class, () -> {
+            throw new InvalidLoginException();
+        });
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
 
     @Test
     void testUpdateBalance() {
