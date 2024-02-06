@@ -10,3 +10,4 @@
 ->  There is no integration with external services (like payment gateways).
 -> //Todo: Implement appropriate logging and error reporting.
 -> //Todo: Implement logic to assign the nearest available taxi while booking.
+-> 74% code-coverage
