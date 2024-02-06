@@ -1,0 +1,13 @@
+-> taxi_id showing null while add booking
+-> taxi_id and user_id showing null while booking cancelled
+-> not showing status while getting booking details
+-> Remove db-name,username,password that are shown in yml file
+-> validations,exceptions are not working
+-> In TaxiRepository, there is an unwanted method
+-> CamelCase issue in booking model class , bookingRequest class and bookingResponse class
+-> //Todo: remove secret-key from JwtService
+-> pending unit-testing for jwt-service
+->  There is no integration with external services (like payment gateways).
+-> //Todo: Implement appropriate logging and error reporting.
+-> //Todo: Implement logic to assign the nearest available taxi while booking.
+-> 74% code-coverage
