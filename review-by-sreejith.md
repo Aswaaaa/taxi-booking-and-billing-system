@@ -16,4 +16,7 @@
 - Implement appropriate logging and error reporting.
 - Implement logic to assign the nearest available taxi while booking.
 
+## Code coverage
+- Current code coverage stands at 74%. Aim to increase this by adding more tests and refining existing ones.
+
 #### There is currently no integration with external services like payment gateways.
