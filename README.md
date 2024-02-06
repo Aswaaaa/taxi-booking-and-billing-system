@@ -45,7 +45,7 @@ To set up the project locally, follow the following:
 * Run `mvn clean install` to build the project and install dependencies.
 * Start the application by running `mvn spring-boot:run`.
 * The server should now be running locally! You can access the APIs at `localhost` on the specified port.
-* Note that the system use JWT authentication, so make sure to set a SECRET_KEY as environment variable.
+
 
 ## Testing
 
