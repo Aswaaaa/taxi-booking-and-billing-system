@@ -1,5 +1,6 @@
 package com.edstem.taxibookingandbillingsystem.contract.response;
 
+import com.edstem.taxibookingandbillingsystem.constant.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,5 @@ public class BookingDetailsResponse {
     private String pickupLocation;
     private String bookingTime;
     private double fare;
+    private Status status;
 }
