@@ -8,7 +8,7 @@ public class EntityAlreadyExistsException extends RuntimeException {
     private final Long id;
 
     public EntityAlreadyExistsException(String entity) {
-        super(entity);
+        super("User already exists");
         this.entity = entity;
         this.id = 0L;
     }

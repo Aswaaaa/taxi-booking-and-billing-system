@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaxiUpdateRequest {
-    @NotBlank(message = "Cannot be empty")
-    private String updatedLocation;
+    @NotBlank private String updatedLocation;
 }

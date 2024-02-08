@@ -4,16 +4,16 @@ import com.edstem.taxibookingandbillingsystem.contract.request.TaxiRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.TaxiUpdateRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.TaxiResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.TaxiUpdateResponse;
+import com.edstem.taxibookingandbillingsystem.exception.TaxiNotAvailableException;
 import com.edstem.taxibookingandbillingsystem.model.Taxi;
 import com.edstem.taxibookingandbillingsystem.repository.TaxiRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +50,7 @@ public class TaxiService {
         return modelMapper.map(updatedTaxi, TaxiUpdateResponse.class);
     }
 
-    public List<TaxiResponse> findTaxi(String pickupLocation) {
+    public List<Taxi> findTaxi(String pickupLocation) {
         List<Taxi> allTaxis = taxiRepository.findAll();
         List<Taxi> availableTaxis = new ArrayList<>();
         for (Taxi taxis : allTaxis) {
@@ -59,10 +59,10 @@ public class TaxiService {
             }
         }
         if (availableTaxis.isEmpty()) {
-            throw new EntityNotFoundException("Taxi not available");
+            throw new TaxiNotAvailableException();
         } else {
             return availableTaxis.stream()
-                    .map(taxi -> modelMapper.map(taxi, TaxiResponse.class))
+                    .map(taxi -> modelMapper.map(taxi, Taxi.class))
                     .collect(Collectors.toList());
         }
     }

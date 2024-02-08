@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,8 +15,7 @@ public class RegisterRequest {
     @NotBlank(message = "Field should not be empty")
     private String name;
 
-    @Email
-    private String email;
+    @Email private String email;
 
     @NotBlank(message = "Field should not be empty")
     private String password;

@@ -7,15 +7,16 @@ import com.edstem.taxibookingandbillingsystem.contract.response.BookingResponse;
 import com.edstem.taxibookingandbillingsystem.exception.BookingNotFoundException;
 import com.edstem.taxibookingandbillingsystem.exception.InsufficientBalanceException;
 import com.edstem.taxibookingandbillingsystem.model.Booking;
+import com.edstem.taxibookingandbillingsystem.model.Taxi;
 import com.edstem.taxibookingandbillingsystem.model.User;
 import com.edstem.taxibookingandbillingsystem.repository.BookingRepository;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +24,13 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final TaxiService taxiService;
 
     public BookingResponse bookingTaxi(Long userId, double distance, BookingRequest request) {
         User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+
+        List<Taxi> availableTaxi = taxiService.findTaxi(request.getPickupLocation());
+        Taxi nearestTaxi = availableTaxi.get(0);
 
         double minimumCharge = 12.00;
         double fare = distance * minimumCharge;
@@ -42,6 +47,7 @@ public class BookingService {
                         .fare(fare)
                         .status(Status.CONFIRMED)
                         .userId(user)
+                        .taxiId(nearestTaxi)
                         .build();
 
         User updatedUser =

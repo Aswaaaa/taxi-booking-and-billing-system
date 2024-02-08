@@ -1,12 +1,23 @@
 package com.edstem.taxibookingandbillingsystem.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.edstem.taxibookingandbillingsystem.contract.request.TaxiRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.TaxiUpdateRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.TaxiResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.TaxiUpdateResponse;
+import com.edstem.taxibookingandbillingsystem.model.Taxi;
 import com.edstem.taxibookingandbillingsystem.repository.TaxiRepository;
 import com.edstem.taxibookingandbillingsystem.service.TaxiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,26 +27,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 public class TaxiControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
-    private TaxiService taxiService;
-    @MockBean
-    private TaxiRepository taxiRepository;
+    @Autowired private MockMvc mockMvc;
+    @MockBean private TaxiService taxiService;
+    @MockBean private TaxiRepository taxiRepository;
 
     @Test
     void testAddingTaxi() throws Exception {
@@ -75,10 +72,10 @@ public class TaxiControllerTest {
     public void testFindTaxi() throws Exception {
 
         String pickupLocation = "Location1";
-        List<TaxiResponse> expectedResponse =
+        List<Taxi> expectedResponse =
                 Arrays.asList(
-                        new TaxiResponse(1L, "Name1", "123ABC", "Location1"),
-                        new TaxiResponse(2L, "Name2", "456DEF", "Location1"));
+                        new Taxi(1L, "Name1", "123ABC", "Location1"),
+                        new Taxi(2L, "Name2", "456DEF", "Location1"));
 
         when(taxiService.findTaxi(pickupLocation)).thenReturn(expectedResponse);
 

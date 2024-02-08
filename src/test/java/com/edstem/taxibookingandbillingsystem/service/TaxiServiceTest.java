@@ -1,5 +1,9 @@
 package com.edstem.taxibookingandbillingsystem.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import com.edstem.taxibookingandbillingsystem.contract.request.TaxiRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.TaxiUpdateRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.TaxiResponse;
@@ -7,6 +11,8 @@ import com.edstem.taxibookingandbillingsystem.contract.response.TaxiUpdateRespon
 import com.edstem.taxibookingandbillingsystem.model.Taxi;
 import com.edstem.taxibookingandbillingsystem.repository.TaxiRepository;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,22 +20,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 public class TaxiServiceTest {
-    @Mock
-    private TaxiRepository taxiRepository;
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private ModelMapper modelMapper;
-    @InjectMocks
-    private TaxiService taxiService;
+    @Mock private TaxiRepository taxiRepository;
+    @Mock private UserRepository userRepository;
+    @Mock private ModelMapper modelMapper;
+    @InjectMocks private TaxiService taxiService;
 
     @BeforeEach
     public void setUp() {

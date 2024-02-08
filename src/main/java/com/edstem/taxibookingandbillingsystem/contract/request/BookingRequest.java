@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @Data
 public class BookingRequest {
-    @NotBlank(message = "It cannot be empty")
+    @NotBlank(message = "Field cannot be blank")
     private String pickupLocation;
 
-    @NotBlank(message = "It cannot be empty")
+    @NotBlank(message = "Field cannot be blank")
     private String dropoffLocation;
 }
