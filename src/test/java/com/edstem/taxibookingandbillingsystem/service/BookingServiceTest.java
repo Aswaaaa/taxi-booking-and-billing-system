@@ -3,6 +3,7 @@ package com.edstem.taxibookingandbillingsystem.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -18,6 +19,8 @@ import com.edstem.taxibookingandbillingsystem.model.User;
 import com.edstem.taxibookingandbillingsystem.repository.BookingRepository;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +33,7 @@ public class BookingServiceTest {
     @Mock private BookingRepository bookingRepository;
     @Mock private UserRepository userRepository;
     @Mock private ModelMapper modelMapper;
+    @Mock private TaxiService taxiService;
     @InjectMocks private BookingService bookingService;
 
     @BeforeEach
@@ -56,13 +60,16 @@ public class BookingServiceTest {
                         LocalDateTime.now(),
                         Status.CONFIRMED);
         BookingResponse expectedResponse =
-                new BookingResponse(1L, "location1", "location2", 120.0, Status.CONFIRMED);
+                new BookingResponse(1L, "location1", "location2", Status.CONFIRMED);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(bookingRepository.save(any(Booking.class))).thenReturn(booking);
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(modelMapper.map(any(Booking.class), eq(BookingResponse.class)))
                 .thenReturn(expectedResponse);
+
+        List<Taxi> availableTaxis = Collections.singletonList(taxi); // Assuming taxi is available
+        when(taxiService.findTaxi(anyString())).thenReturn(availableTaxis);
 
         BookingResponse actualResponse = bookingService.bookingTaxi(userId, distance, request);
 
@@ -71,7 +78,7 @@ public class BookingServiceTest {
 
     @Test
     public void testEntityAlreadyExistsException() {
-        String entity = "User";
+        String entity = "User already exists";
         EntityAlreadyExistsException exception =
                 assertThrows(
                         EntityAlreadyExistsException.class,
@@ -114,7 +121,11 @@ public class BookingServiceTest {
                         Status.CONFIRMED);
         BookingDetailsResponse expectedResponse =
                 new BookingDetailsResponse(
-                        1L, "PickupLocation", LocalDateTime.now().toString(), 120.0);
+                        1L,
+                        "PickupLocation",
+                        LocalDateTime.now().toString(),
+                        120.0,
+                        Status.CONFIRMED);
 
         when(bookingRepository.findById(bookingId)).thenReturn(Optional.of(booking));
         when(modelMapper.map(booking, BookingDetailsResponse.class)).thenReturn(expectedResponse);

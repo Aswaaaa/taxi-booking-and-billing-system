@@ -37,7 +37,7 @@ public class BookingControllerTest {
 
         BookingRequest request = new BookingRequest("location1", "location2");
         BookingResponse expectedResponse =
-                new BookingResponse(1L, "location1", "location2", 55.0, Status.CONFIRMED);
+                new BookingResponse(1L, "location1", "location2", Status.CONFIRMED);
 
         when(bookingService.bookingTaxi(userId, distance, request)).thenReturn(expectedResponse);
 
@@ -54,7 +54,8 @@ public class BookingControllerTest {
     void testGetBookingDetails() throws Exception {
         Long id = 1L;
         BookingDetailsResponse bookingDetailsResponse =
-                new BookingDetailsResponse(id, "location1", LocalDateTime.now().toString(), 55.0);
+                new BookingDetailsResponse(
+                        id, "location1", LocalDateTime.now().toString(), 10.0, Status.CONFIRMED);
 
         when(bookingService.getBookingDetails(id)).thenReturn(bookingDetailsResponse);
 
