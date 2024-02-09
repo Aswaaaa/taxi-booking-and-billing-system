@@ -70,16 +70,16 @@ public class TaxiServiceTest {
         Taxi taxi1 = new Taxi(1L, "Driver1", "ABC123", "SomeLocation");
         Taxi taxi2 = new Taxi(2L, "Driver2", "XYZ456", "SomeLocation");
         List<Taxi> allTaxis = List.of(taxi1, taxi2);
-        List<TaxiResponse> expectedResponse =
+        List<Taxi> expectedResponse =
                 List.of(
-                        new TaxiResponse(1L, "Driver1", "ABC123", "SomeLocation"),
-                        new TaxiResponse(2L, "Driver2", "XYZ456", "SomeLocation"));
+                        new Taxi(1L, "Driver1", "ABC123", "SomeLocation"),
+                        new Taxi(2L, "Driver2", "XYZ456", "SomeLocation"));
 
         when(taxiRepository.findAll()).thenReturn(allTaxis);
-        when(modelMapper.map(taxi1, TaxiResponse.class)).thenReturn(expectedResponse.get(0));
-        when(modelMapper.map(taxi2, TaxiResponse.class)).thenReturn(expectedResponse.get(1));
+        when(modelMapper.map(taxi1, Taxi.class)).thenReturn(expectedResponse.get(0));
+        when(modelMapper.map(taxi2, Taxi.class)).thenReturn(expectedResponse.get(1));
 
-        List<TaxiResponse> actualResponse = taxiService.findTaxi(pickupLocation);
+        List<Taxi> actualResponse = taxiService.findTaxi(pickupLocation);
 
         assertEquals(expectedResponse, actualResponse);
     }
