@@ -1,6 +1,7 @@
 package com.edstem.taxibookingandbillingsystem.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -8,9 +9,11 @@ import com.edstem.taxibookingandbillingsystem.contract.request.TaxiRequest;
 import com.edstem.taxibookingandbillingsystem.contract.request.TaxiUpdateRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.TaxiResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.TaxiUpdateResponse;
+import com.edstem.taxibookingandbillingsystem.exception.TaxiNotAvailableException;
 import com.edstem.taxibookingandbillingsystem.model.Taxi;
 import com.edstem.taxibookingandbillingsystem.repository.TaxiRepository;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,5 +85,18 @@ public class TaxiServiceTest {
         List<Taxi> actualResponse = taxiService.findTaxi(pickupLocation);
 
         assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    void testFindTaxi_WhenNoTaxisAvailable() {
+        String pickupLocation = "pickupLocation";
+
+        when(taxiRepository.findAll()).thenReturn(Collections.emptyList());
+
+        assertThrows(
+                TaxiNotAvailableException.class,
+                () -> {
+                    taxiService.findTaxi(pickupLocation);
+                });
     }
 }

@@ -1,11 +1,14 @@
 package com.edstem.taxibookingandbillingsystem.service;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.edstem.taxibookingandbillingsystem.configuration.JwtService;
 import com.edstem.taxibookingandbillingsystem.model.User;
+import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,5 +34,29 @@ public class JwtServiceTest {
         String token = jwtService.generateToken(mockUser);
 
         assertNotNull(token);
+    }
+
+    @Test
+    public void testIsTokenValid() {
+        User mockUser = mock(User.class);
+        when(mockUser.getUsername()).thenReturn("testUser");
+
+        JwtService jwtService = new JwtService();
+
+        String token = jwtService.generateToken(mockUser);
+
+        boolean isValid = jwtService.isTokenValid(token, mockUser);
+        assertTrue(isValid, "Token should be valid");
+    }
+
+    @Test
+    public void testIsTokenExpired() {
+        String token = "DummyToken";
+
+        JwtService jwtService = mock(JwtService.class);
+
+        boolean isExpired = jwtService.isTokenExpired(token);
+
+        assertFalse(isExpired, "Token should not be expired");
     }
 }

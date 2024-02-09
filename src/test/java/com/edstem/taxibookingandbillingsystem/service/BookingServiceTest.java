@@ -11,7 +11,7 @@ import com.edstem.taxibookingandbillingsystem.constant.Status;
 import com.edstem.taxibookingandbillingsystem.contract.request.BookingRequest;
 import com.edstem.taxibookingandbillingsystem.contract.response.BookingDetailsResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.BookingResponse;
-import com.edstem.taxibookingandbillingsystem.exception.EntityAlreadyExistsException;
+import com.edstem.taxibookingandbillingsystem.exception.BookingNotFoundException;
 import com.edstem.taxibookingandbillingsystem.exception.InsufficientBalanceException;
 import com.edstem.taxibookingandbillingsystem.model.Booking;
 import com.edstem.taxibookingandbillingsystem.model.Taxi;
@@ -46,6 +46,7 @@ public class BookingServiceTest {
 
         Long userId = 1L;
         double distance = 1.0;
+
         BookingRequest request = new BookingRequest("location1", "location2");
         User user = new User(1L, "Name", "name@email.com", "password", 100.0);
         Taxi taxi = new Taxi(1L, "Name", "ABC123", "location1");
@@ -68,27 +69,11 @@ public class BookingServiceTest {
         when(modelMapper.map(any(Booking.class), eq(BookingResponse.class)))
                 .thenReturn(expectedResponse);
 
-        List<Taxi> availableTaxis = Collections.singletonList(taxi); // Assuming taxi is available
+        List<Taxi> availableTaxis = Collections.singletonList(taxi);
         when(taxiService.findTaxi(anyString())).thenReturn(availableTaxis);
 
         BookingResponse actualResponse = bookingService.bookingTaxi(userId, distance, request);
-
         assertEquals(expectedResponse, actualResponse);
-    }
-
-    @Test
-    public void testEntityAlreadyExistsException() {
-        String entity = "User already exists";
-        EntityAlreadyExistsException exception =
-                assertThrows(
-                        EntityAlreadyExistsException.class,
-                        () -> {
-                            throw new EntityAlreadyExistsException(entity);
-                        });
-
-        assertEquals(entity, exception.getEntity());
-        assertEquals(0L, exception.getId());
-        assertEquals(entity, exception.getMessage());
     }
 
     @Test
@@ -136,6 +121,18 @@ public class BookingServiceTest {
     }
 
     @Test
+    void testGetBookingDetails_BookingNotFound() {
+        Long id = 1L;
+        when(bookingRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(
+                BookingNotFoundException.class,
+                () -> {
+                    bookingService.getBookingDetails(id);
+                });
+    }
+
+    @Test
     void testCancelBookingById() {
         Long bookingId = 1L;
         Long userId = 1L;
@@ -160,5 +157,17 @@ public class BookingServiceTest {
         assertEquals(
                 "Booking with ID: " + bookingId + " has been cancelled successfully.",
                 actualResponse);
+    }
+
+    @Test
+    void testCancelBookingById_BookingNotFound() {
+        Long id = 1L;
+        when(bookingRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(
+                BookingNotFoundException.class,
+                () -> {
+                    bookingService.cancelBookingById(id);
+                });
     }
 }

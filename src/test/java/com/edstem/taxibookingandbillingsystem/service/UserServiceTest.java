@@ -12,6 +12,7 @@ import com.edstem.taxibookingandbillingsystem.contract.request.UpdateAccountRequ
 import com.edstem.taxibookingandbillingsystem.contract.response.LoginResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.RegisterResponse;
 import com.edstem.taxibookingandbillingsystem.contract.response.UpdateAccountResponse;
+import com.edstem.taxibookingandbillingsystem.exception.EntityAlreadyExistsException;
 import com.edstem.taxibookingandbillingsystem.exception.InvalidLoginException;
 import com.edstem.taxibookingandbillingsystem.model.User;
 import com.edstem.taxibookingandbillingsystem.repository.UserRepository;
@@ -55,6 +56,21 @@ public class UserServiceTest {
 
         RegisterResponse actualResponse = userService.register(request);
         assertEquals(expectedResponse, actualResponse);
+    }
+
+    @Test
+    public void testEntityAlreadyExistsException() {
+        String entity = "User already exists";
+        EntityAlreadyExistsException exception =
+                assertThrows(
+                        EntityAlreadyExistsException.class,
+                        () -> {
+                            throw new EntityAlreadyExistsException(entity);
+                        });
+
+        assertEquals(entity, exception.getEntity());
+        assertEquals(0L, exception.getId());
+        assertEquals(entity, exception.getMessage());
     }
 
     @Test
