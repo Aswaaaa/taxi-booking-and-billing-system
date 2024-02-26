@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  java_app:
+    container_name: taxi_container
+    image: taxi_booking/java_app:1.0.0
+    build: .
+    ports:
+      - 8090:8090
+    env_file:
+      - .env
+    depends_on:
+      - java_db
+
+  java_db:
+    container_name: java_db
+    image: postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: aswa19
+      POSTGRES_DB: taxi
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}

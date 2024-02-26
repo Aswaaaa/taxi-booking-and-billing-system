@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import com.edstem.taxibookingandbillingsystem.configuration.JwtService;
 import com.edstem.taxibookingandbillingsystem.model.User;
-import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
